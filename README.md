@@ -1,4 +1,4 @@
-# 📘 Leetcode Study: Linked List - Problem 203
+# 📘 Leetcode Study: Linked List 
 
 ## 🚀 Problem: Remove Linked List Elements
 
