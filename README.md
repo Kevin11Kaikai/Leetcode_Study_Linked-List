@@ -10,7 +10,7 @@
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val        # value stored in the node
-        self.next = next      # pointer to the next node
+        self.next = next      # pointer to the next node           
 
 class Solution:
     def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
@@ -30,7 +30,7 @@ class Solution:
 
         # Step 4: Return the new head (could be different from original head)
         return dummy.next
-'''
+```
 ✅ Linked List — Core Concepts & Common Pitfalls
 
 🧩 Concept Summary
