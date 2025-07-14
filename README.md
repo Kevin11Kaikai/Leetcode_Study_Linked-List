@@ -305,3 +305,133 @@ Use the pattern:
 Save → Flip → Advance → Repeat
 ```
 
+
+# 🚀 Leetcode 92 - Reverse Linked List II
+
+---
+
+## ✅ Problem Summary
+
+Given the head of a singly linked list and two integers `left` and `right`, reverse the nodes of the list from position `left` to `right`, and return the reversed list. The positions are 1-indexed.
+
+---
+
+## 📥 Example
+
+**Input:**
+```
+head = [1, 2, 3, 4, 5], left = 2, right = 4
+```
+
+**Output:**
+```
+[1, 4, 3, 2, 5]
+```
+
+---
+
+## ✅ Python Code (With Full Comments)
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        dummy.next = head # Always point to the head, helps simplify edge cases
+        # Step 1: Move left_prev to the node just before `left`
+        left_prev = dummy
+        for _ in range(left-1):
+            left_prev = left_prev.next # update the left previous node
+        # Step 2: Reverse the sublist from left to right
+        prev = None
+        current = left_prev.next
+        for i in range(right-left+1): # reverse the left to right
+            next_node = current.next # save the next node
+            current.next = prev # reverese the node
+            prev = current # forward the prev node
+            current = next_node # forward the cureent
+        # Step 3: Reconnect the reversed sublist with the original list
+        left_prev.next = prev # connect left_prev with prev
+        for i in range(right-left+1):
+            left_prev = left_prev.next # forward the left_prev
+        left_prev.next = current # connect the last element of the reversed part to the current
+        return dummy.next
+        
+```
+
+---
+
+## ⏱️ Complexity Analysis
+
+| Metric           | Value |
+|------------------|--------|
+| Time Complexity  | O(n)   |
+| Space Complexity | O(1)   |
+
+---
+
+## 🧠 Key Concepts & Pointer Roles
+
+| Variable    | Role                                 |
+|-------------|--------------------------------------|
+| `dummy`     | Protects against left=1 edge case    |
+| `left_prev` | Node before the sublist to reverse   |
+| `current`   | Node currently being processed       |
+| `prev`      | Tracks reversed list's head          |
+| `next_node` | Temp pointer to save traversal       |
+
+---
+
+## 🔁 Visual Walkthrough
+
+Initial:
+```
+dummy → 1 → 2 → 3 → 4 → 5
+                ↑       ↑
+             left     right
+```
+
+After reversing [2, 3, 4]:
+```
+dummy → 1    4 → 3 → 2    5
+         \________________//
+                 ↑        ↑
+              prev     current
+```
+
+Reconnect:
+- `left_prev.next = prev` → 1 → 4
+- 遍历 right-left+1 步，left_prev 指向 2（反转段尾部）
+- `left_prev.next = current` → 2 → 5
+
+Final:
+```
+dummy → 1 → 4 → 3 → 2 → 5
+```
+
+
+## 📌 Final Takeaways
+
+- Always use a `dummy` node to simplify edge cases
+- Identify and isolate three segments: before, to-reverse, after
+- Reconnect in **two** places: `left_prev` to new head, tail to `current`
+- Order of the two reconnections is **interchangeable**, since they do not interfere
+
+Use:
+```
+Isolate → Reverse → Reconnect
+```
+
+
+### ✅ Summary
+
+- `left_prev.next` → new head of the reversed segment (e.g., 4)
+- Move `left_prev` forward by right-left+1 steps so that it points to the tail of the reversed segment (e.g., 2)
+- `left_prev.next = current` → correctly connects the tail of the reversed segment to the following node (e.g., 2 → 5)
+
+
+
