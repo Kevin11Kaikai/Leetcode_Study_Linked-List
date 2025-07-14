@@ -151,3 +151,157 @@ Return:   dummy.next → 2 → 3 → 4 → 5
 |-------------------|-----------|
 | Time Complexity   | O(n)      |
 | Space Complexity  | O(1)      |
+
+
+# 🚀 Leetcode 206 - Reverse Linked List
+
+---
+
+## ✅ Python Code (with Full Comments)
+
+```python
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None                  # Previous node (tail of reversed list)
+        current = head               # Current node in original list
+
+        while current:
+            next_node = current.next  # 🔁 Save next node before cutting
+            current.next = prev       # 🔁 Reverse the pointer
+            prev = current            # Move prev forward (new head grows)
+            current = next_node       # Move current forward (continue traversal)
+
+        return prev  # New head of reversed list
+```
+
+---
+
+## ⏱️ Complexity
+
+| Metric           | Value |
+|------------------|--------|
+| Time Complexity  | O(n)   |
+| Space Complexity | O(1)   |
+
+---
+
+## 🧠 Intuition & Visualization
+
+### Original List:
+```
+head → 1 → 2 → 3 → 4 → 5 → None
+```
+
+### Reversed:
+```
+5 → 4 → 3 → 2 → 1 → None
+```
+
+---
+
+### 🔁 Step-by-Step Example: [1 → 2 → 3]
+
+Initial:
+```
+prev    = None
+current = 1 → 2 → 3
+```
+
+Step 1:
+```
+next_node = 2
+current.next = prev → 1 → None
+prev = 1
+current = 2
+```
+
+Step 2:
+```
+next_node = 3
+current.next = prev → 2 → 1 → None
+prev = 2
+current = 3
+```
+
+Step 3:
+```
+next_node = None
+current.next = prev → 3 → 2 → 1 → None
+prev = 3
+current = None (done)
+```
+
+---
+
+## 🧭 Why Use Two Pointers (`prev` and `current`)?
+
+| Pointer | Purpose                             |
+|---------|-------------------------------------|
+| `current` | Traverses the original list         |
+| `prev`    | Rebuilds the reversed list from tail |
+
+- You **must** preserve `current.next` before reversing the link, or you'll lose access to the rest of the list.
+- One pointer is not enough — reversing is a **destructive operation**, so you need to **save and rebuild simultaneously**.
+
+---
+
+## 🔄 Mental Analogy
+
+> Imagine walking across a rope bridge. Every step you take, you must detach the plank behind and re-attach it in reverse.  
+> You need one hand to hold the old bridge (`current`) and one hand to rebuild the reversed one (`prev`).
+
+---
+
+## ⚠️ Mistake Log: What I Tried and Why It Failed
+
+### ❌ Mistake 1: Forgetting to save `next_node`
+
+```python
+current.next = prev
+current = current.next  # 💥 current now points to prev, not the next node
+```
+
+**Bug:**
+You overwrote the `.next` pointer before saving it. Now you've lost the rest of the list.
+
+---
+
+### ❌ Mistake 2: Wrong update order
+
+```python
+prev = current
+current.next = prev  # 💥 creates a cycle!
+```
+
+**Bug:**
+This makes a loop: node points to itself. Always reverse pointer first, then move `prev` forward.
+
+---
+
+### ❌ Mistake 3: Only using one pointer
+
+Trying to do everything with just `current` is impossible:
+- You’ll lose the original path once you reverse the link.
+- No way to “re-enter” the list unless you stored the `next_node`.
+
+---
+
+## ✅ Key Takeaways
+
+- ✅ Use two pointers: `current` walks the list; `prev` builds the reversed one.
+- ✅ Always save `next_node` before reversing.
+- ✅ Reversing is a **destructive** operation — without saving, you lose the rest.
+- ✅ Final result is `prev`, not `head`, because `head` becomes the tail.
+
+---
+
+## 📌 Summary
+
+> Reversing a linked list is **not just pointer flipping** — it’s a process of **simultaneous teardown and reconstruction**.
+
+Use the pattern:
+
+```text
+Save → Flip → Advance → Repeat
+```
+
